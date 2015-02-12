@@ -15,7 +15,8 @@ var config = {
       secret : "wild thing"
     },
     proxy: ip.address+':3000',
-    db: 'mongodb://localhost/cola-io-development'
+    db: 'mongodb://localhost/cola-io-development',
+    fixtures: true,
   },
 
   test: {
@@ -28,7 +29,8 @@ var config = {
       secret : "wild thing"
     },
     proxy: ip.address+':3000',
-    db: 'mongodb://localhost/cola-io-test'
+    db: 'mongodb://localhost/cola-io-test',
+    fixtures: true,
   },
 
   production: {
@@ -41,7 +43,8 @@ var config = {
       secret : "wild thing"
     },
     proxy: ip.address+':3000',
-    db: 'mongodb://localhost/cola-io-production'
+    db: 'mongodb://localhost/cola-io-production',
+    fixtures: true,
   }
 };
 

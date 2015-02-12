@@ -1,4 +1,5 @@
 extends layout
 
 block content
-  h1 Tu turno es el #{call}
+  - if (box)
+    h1 Tenes turno con el Box #{box.code}, tu numero es el #{call}

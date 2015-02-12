@@ -8,11 +8,10 @@ module.exports = function (app) {
   app.use('/', router);
 };
 
-router.get('/qr/:id', function (req, res, next) {
-  console.log(config)
-
+router.get('/qr/:box_id/:id', function (req, res, next) {
+  var box_id = req.params.box_id;
   var qr_id = req.params.id;
-  var code = qr.image( 'http://' + config.proxy + '/call/' + qr_id  , { type: 'png' });
+  var code = qr.image( 'http://' + config.proxy + '/call/' + box_id + '/' + qr_id  , { type: 'png' });
   res.type('png');
   code.pipe(res);
 

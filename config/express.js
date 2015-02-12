@@ -14,6 +14,11 @@ var session      = require('express-session')
   ;
 
 module.exports = function(app, config) {
+  // DB Fixtures
+  if ( config.fixtures )
+    require('mongoose-fixtures').load('../fixtures');
+
+
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'jade');
 

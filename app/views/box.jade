@@ -2,19 +2,13 @@ extends layout
 
 block content
   .jumbotron
-    .center
-      - var init_date = new Date().getTime()
-      img.qrcode#qr( src="/qr/" + init_date )
-      a( href=call_path + init_date )="TEST"
+    h1.center Box Nro #{box.code}
     br
-    p.text-center="Presiona el boton para obtner un numero, luega escanea el codigo con tu celular y espera a que te toque el turno"
+    p.text-center="Por aca diria cuantos hay en la cola y cual es el que viene"
 
     p.text-center
-      a.btn.btn-primary.btn-lg#new_number(href="#" role="button")="Mi Numero"
+      a.btn.btn-primary.btn-lg#next_call(href="#" role="button")="Llamar proximo"
 
 
 block js
-  script.
-    $('#new_number').click( function (){
-      $('#qr')[0].src = "/qr/" + new Date().getTime();
-    });
+

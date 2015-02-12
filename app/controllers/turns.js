@@ -1,6 +1,8 @@
 var express = require('express')
   , router = express.Router()
   , config  = require('../../config/config')
+  , mongoose = require('mongoose')
+  , Box = mongoose.model('Box')
   ;
   // Article = require('../models/article');
 
@@ -10,5 +12,12 @@ module.exports = function (app) {
 
 router.get('/', function (req, res, next) {
   var call_path = 'http://' + config.proxy + '/call/';
-  res.render( 'index', { call_path: call_path });
+  Box.find( {is_active: true}, function (err, docs) {
+    if (err) {
+      req.flash( "error", "Ha ocurrido un error" );
+      res.redirect( '/' );
+    }
+
+    res.render( 'index', { boxes: docs, call_path: call_path });
+  })
 });
