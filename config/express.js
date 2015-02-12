@@ -8,6 +8,11 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 
+var session      = require('express-session')
+  , flash        = require('connect-flash')
+  , _ = require('lodash')
+  ;
+
 module.exports = function(app, config) {
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'jade');
@@ -21,19 +26,42 @@ module.exports = function(app, config) {
   app.use(cookieParser());
   app.use(compress());
   app.use(express.static(config.root + '/public'));
+  app.use(express.static(config.root + '/public/components'));
   app.use(methodOverride());
+
+  app.use(session({ secret: config.session.secret, resave: true, saveUninitialized: true }));
+  app.use(flash());
+
+  // Connect Flash interceptor
+  app.use( function(req, res, next) {
+    // res.locals.user    = req.user;
+
+    var flash = req.flash();
+
+    res.locals.message = ! res.locals.message
+      ? flash
+      : _(flash).forEach( function (v, k) {
+        ! res.locals.message[k]
+          ? res.locals.message[k].push(v)
+          : res.locals.message[k] = [v]
+      });
+
+
+    next();
+  });
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach(function (controller) {
     require(controller)(app);
   });
 
+
   app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
   });
-  
+
   if(app.get('env') === 'development'){
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
